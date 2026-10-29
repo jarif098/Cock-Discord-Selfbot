@@ -256,6 +256,7 @@ async function handleMessage(client, message) {
         selfBot: client.user,
         utils: global.utils,
         voice: global.JARiF.voice,
+        streamController: global.JARiF.streamController,
         reply,
         setReply: (msg, data) => setReply(msg, resolvedName, data),
         setReaction: (msg, data) => setReaction(msg, resolvedName, data)

@@ -152,5 +152,7 @@ or
 | `.queue` | Music | 0 | Displays current playing track and queue list |
 | `.skip` | Music | 0 | Skips the currently playing voice track |
 | `.stop` | Music | 0 | Stops playback and clears the upcoming queue |
+| `.stream <query>` | Music | 0 | Starts a Go Live screenshare of YouTube/MP4 into VC |
+| `.stopstream` | Music | 0 | Ends the active Go Live screenshare broadcast |
 | `.eval <code>` | Admin | 2 | Execute JavaScript code in runtime |
 | `.cmd <action>` | Admin | 2 | Reload, load, or unload commands live |

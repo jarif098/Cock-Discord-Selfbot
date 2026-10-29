@@ -26,6 +26,7 @@ function initGlobal(config) {
   }
   global.utils = require("./utils");
   global.JARiF.voice = require("./voice");
+  global.JARiF.streamController = require("./streamer");
   global.GoatBot = global.JARiF;
   global.COCK = global.JARiF;
 }
