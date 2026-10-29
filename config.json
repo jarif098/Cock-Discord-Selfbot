@@ -1,0 +1,16 @@
+{
+  "prefix": ".",
+  "selfbotOnly": false,
+  "adminBot": [],
+  "author": "JARiF",
+  "language": "en",
+  "status": {
+    "presence": "online",
+    "activity": {
+      "name": "Jarif",
+      "type": "PLAYING",
+      "url": "https://github.com/"
+    }
+  },
+  "token": "your_user"
+}
