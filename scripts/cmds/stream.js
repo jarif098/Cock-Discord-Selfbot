@@ -55,6 +55,18 @@ module.exports = {
     const query = args.join(" ").trim();
     const waitMsg = await reply("📺 Initializing Go Live screenshare stream, please wait...");
 
+    // Safe helper to edit or send message
+    const sendUpdate = async (content) => {
+      try {
+        if (waitMsg && typeof waitMsg.edit === "function") {
+          return await waitMsg.edit(content);
+        }
+      } catch (_) {}
+      try {
+        return await message.channel.send(content);
+      } catch (_) {}
+    };
+
     try {
       const source = await streamController.startScreenShare({
         client,
@@ -76,9 +88,9 @@ module.exports = {
         `\n💡 *Join the voice channel and click "Watch Stream" to view!*`
       ].join("\n");
 
-      await waitMsg.edit(boxText("SCREENSHARE LIVE", details));
+      await sendUpdate(boxText("SCREENSHARE LIVE", details));
     } catch (err) {
-      await waitMsg.edit(`❌ Failed to start screenshare stream: \`${err.message}\``);
+      await sendUpdate(`❌ Failed to start screenshare stream: \`${err.message}\``);
     }
   }
 };

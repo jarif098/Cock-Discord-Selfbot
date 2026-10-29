@@ -57,7 +57,7 @@ async function resolveVideoSource(query) {
     videoTitle = info.videoDetails.title || videoTitle;
     videoAuthor = info.videoDetails.author?.name || videoAuthor;
 
-    // Best video format (prefer up to 720p/1080p for stable real-time streaming)
+    // Best video format (prefer 720p/1080p for stable real-time streaming)
     const videoFormats = info.formats
       .filter(f => f.hasVideo && !f.isLive)
       .sort((a, b) => (b.height || 0) - (a.height || 0));
@@ -128,17 +128,21 @@ async function startScreenShare({ client, guildId, channelId, query, textChannel
     bitrateVideoMax: resolution === 1080 ? 6000 : 3500,
     videoCodec: Utils.normalizeVideoCodec("H264"),
     encoder: Encoders.software({
-      x264: { preset: "veryfast" }
+      x264: { preset: "superfast" }
     })
   };
 
+  let streamInput = source.videoUrl;
   if (source.audioUrl) {
-    // Dual input: map separate video and audio streams
-    streamOptions.customInputOptions = ["-i", source.audioUrl];
+    // Due to fluent-ffmpeg-simplified placing customInputOptions before the main input,
+    // we set audioUrl as main input and prepend videoUrl so that:
+    // Input #0 = VIDEO, Input #1 = AUDIO.
+    streamInput = source.audioUrl;
+    streamOptions.customInputOptions = ["-i", source.videoUrl];
     streamOptions.customFfmpegFlags = ["-map", "0:v:0", "-map", "1:a:0?"];
   }
 
-  const { command, output } = prepareStream(source.videoUrl, streamOptions, abortController.signal);
+  const { command, output } = prepareStream(streamInput, streamOptions, abortController.signal);
 
   command.on("error", (err) => {
     logger.warn(`FFmpeg Stream notice: ${err?.message || err}`);
